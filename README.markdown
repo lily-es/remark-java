@@ -4,9 +4,7 @@
 
 ## About this fork
 
-This fork was created in order to convert Maven build system to Gradle and deploy library to Maven Central Repository.
-
-**Please note that this fork is no longer maintained.**
+This fork was created to update the jsoup dependency to make it compatible with newer jsoup versions due to class name changes.
 
 ## Example Usage Scenario
 
