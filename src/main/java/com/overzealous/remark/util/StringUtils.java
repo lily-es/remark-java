@@ -37,7 +37,7 @@ public class StringUtils {
 	 * Pads out a left-, right-, or center-aligned string using spaces up to the specified width.
 	 * @param s String to pad
 	 * @param width Minimum width of final string
-	 * @param alignment How to align the string < 0 means left, 0 means center, and > 0 means right
+	 * @param alignment How to align the string \< 0 means left, 0 means center, and \> 0 means right
 	 * @return Padded string
 	 */
 	@SuppressWarnings({"SameParameterValue", "SameParameterValue"})
