@@ -1,4 +1,0 @@
-Bundle-Name: Remark
-Bundle-SymbolicName: com.kotcrab.remark
-Import-Package: org.apache.commons.cli;resolution:=optional,*
--exportcontents: *
