@@ -22,7 +22,7 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:3.4"
     implementation "commons-cli:commons-cli:1.2"
     testImplementation 'commons-io:commons-io:2.7'
-    testImplementation group: 'junit', name: 'junit', version: '4.13.1'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 
 java {
