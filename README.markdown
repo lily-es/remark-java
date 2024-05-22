@@ -54,6 +54,13 @@ jsoup uses the [MIT License][jsoup license], which is roughly comparable to the 
 
 During testing, **Remark** also depends on some additional libraries, which are automatically downloaded by the gradle build script.
 
+## Deploying
+[JReleaser - Publishing to Maven Central][JReleaser]
+1. `./gradlew jreleaserConfig`
+2. `./gradlew clean`
+3. `./gradlew publish`
+4. `./gradlew jreleaserFullRelease`
+
 ## License
 
 **Remark** is released under the [Apache 2.0 license][].
@@ -90,3 +97,4 @@ During testing, **Remark** also depends on some additional libraries, which are 
 [Apache Commons CLI]: http://commons.apache.org/cli/
 [Gradle]: http://gradle.org/
 [Apache 2.0 License]: http://www.apache.org/licenses/LICENSE-2.0
+[JReleaser]: https://jreleaser.org/guide/latest/examples/maven/maven-central.html#_gradle
