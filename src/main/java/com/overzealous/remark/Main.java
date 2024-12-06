@@ -20,8 +20,11 @@ import org.apache.commons.cli.*;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +76,7 @@ public class Main {
             //noinspection IOResourceOpenedButNotSafelyClosed
             fos = new FileOutputStream(myArgs.output);
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			osw = new OutputStreamWriter(fos, "UTF-8");
+			osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
 			//noinspection IOResourceOpenedButNotSafelyClosed
 			bw = new BufferedWriter(osw);
 			remark = remark.withWriter(bw);
@@ -107,7 +110,7 @@ public class Main {
 		Args result = new Args();
 		List<String> error = new ArrayList<String>();
 		org.apache.commons.cli.Options opts = makeOptions();
-		CommandLineParser clp = new PosixParser();
+		CommandLineParser clp = new DefaultParser();
 		
 		try {
 			CommandLine cl = clp.parse(opts, args, true);
@@ -148,7 +151,7 @@ public class Main {
 	private void printErrors(List<String> error) {
 		if(error.size() == 1) {
 			System.err.print("Error: ");
-			System.err.println(error.get(0));
+			System.err.println(error.getFirst());
 		} else {
 			System.err.println("Error:");
 			for(final String err : error) {
@@ -177,8 +180,6 @@ public class Main {
 		if(cl.hasOption('t')) {
 			String type = cl.getOptionValue('t');
 			if("markdown".equalsIgnoreCase(type)) {
-				result.options = Options.markdown();
-			} else if("markdown".equalsIgnoreCase(type)) {
 				result.options = Options.markdown();
 			} else if("multimarkdown".equalsIgnoreCase(type)) {
 				result.options = Options.multiMarkdown();
@@ -225,7 +226,7 @@ public class Main {
 	private void checkTimeout(CommandLine cl, Args result, List<String> error) {
 		if(cl.hasOption("timeout")) {
 			try {
-				Integer timeout = Integer.parseInt(cl.getOptionValue("timeout"));
+				int timeout = Integer.parseInt(cl.getOptionValue("timeout"));
 				if(timeout < 1) {
 					error.add("Invalid timeout specified.");
 				} else {
@@ -256,17 +257,17 @@ public class Main {
 	}
 	
 	private void checkInput(CommandLine cl, Args result, List<String> error) {
-		List leftover = cl.getArgList();
+		List<String> leftover = cl.getArgList();
 		if(leftover.isEmpty()) {
 			error.add("No input file or URL specified.");
 		} else if(leftover.size() > 1) {
 			error.add("Too many arguments.");
 		} else {
-			String arg = (String)leftover.get(0);
+			String arg = (String)leftover.getFirst();
 			if(arg.contains("://")) {
 				try {
-					result.urlInput = new URL(arg);
-				} catch(MalformedURLException ex) {
+					result.urlInput = new URI(arg).toURL();
+				} catch(MalformedURLException | URISyntaxException ex) {
 					error.add("Malformed URL: "+ex.getMessage());
 				}
 			} else {

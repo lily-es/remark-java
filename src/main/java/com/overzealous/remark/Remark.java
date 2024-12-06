@@ -70,7 +70,7 @@ public class Remark {
 	 * Creates a default, pure Markdown-compatible Remark instance.
 	 */
 	public Remark() {
-		this(Options.markdown());
+		this(Options.markdown(), null);
 	}
 
 	/**
@@ -79,8 +79,19 @@ public class Remark {
 	 * @param options Specified options to use on this instance.  See the docs for the Options class for common options sets.
 	 */
 	public Remark(Options options) {
+		this(options, null);
+	}
+
+
+	/**
+	 * Creates a Remark instance with the specified options and customized safelist.
+	 *
+	 * @param options Specified options to use on this instance.  See the docs for the Options class for common options sets.
+	 * @param safelistBlock Function for customizing safelist
+	 */
+	public Remark(Options options, CustomizeSafelistBlock safelistBlock) {
 		this.options = options.getCopy();
-		Safelist whitelist = Safelist.basicWithImages()
+		Safelist safelist = Safelist.basicWithImages()
 									  .addTags("div",
                                               "h1", "h2", "h3", "h4", "h5", "h6",
                                               "table", "tbody", "td", "tfoot", "th", "thead", "tr",
@@ -90,23 +101,28 @@ public class Remark {
 									  .addAttributes("td", "colspan", "align", "style")
 									  .addAttributes(":all", "title", "style");
         if(options.preserveRelativeLinks) {
-            whitelist.preserveRelativeLinks(true);
+            safelist.preserveRelativeLinks(true);
         }
 		if(options.abbreviations) {
-			whitelist.addTags("abbr", "acronym");
+			safelist.addTags("abbr", "acronym");
 		}
 		if(options.headerIds) {
 			for(int i=1; i<=6; i++) {
-				whitelist.addAttributes("h"+i, "id");
+				safelist.addAttributes("h"+i, "id");
 			}
 		}
 		for(final IgnoredHtmlElement el : options.getIgnoredHtmlElements()) {
-			whitelist.addTags(el.getTagName());
+			safelist.addTags(el.getTagName());
             if(!el.getAttributes().isEmpty()) {
-                whitelist.addAttributes(el.getTagName(), el.getAttributes().toArray(new String[el.getAttributes().size()]));
+                safelist.addAttributes(el.getTagName(), el.getAttributes().toArray(new String[el.getAttributes().size()]));
             }
 		}
-		cleaner = new Cleaner(whitelist);
+
+		if(safelistBlock != null) {
+			safelistBlock.customizeSafelist(safelist);
+		}
+
+		cleaner = new Cleaner(safelist);
 
 		if(options.getTables().isLeftAsHtml()) {
 			// we need to allow the table nodes to be ignored
@@ -370,5 +386,10 @@ public class Remark {
 			converterLock.unlock();
 		}
 		return result;
+	}
+
+	@FunctionalInterface
+	public interface CustomizeSafelistBlock {
+		void customizeSafelist(Safelist safelist);
 	}
 }
