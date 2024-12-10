@@ -4,7 +4,7 @@
 
 ## About this fork
 
-This fork was created to update the jsoup dependency to make it compatible with newer jsoup versions due to class name changes.
+This fork was created to update the jsoup dependency to make it compatible with newer jsoup versions due to class name changes. It will be kept up to date with dependency updates. I will also add features to it that I feel are relevant or necessary. Feel free to contribute with issues or PRs!
 
 ## Example Usage Scenario
 
