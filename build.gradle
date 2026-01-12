@@ -18,7 +18,7 @@ sourceCompatibility = 21.0
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
-    implementation 'org.jsoup:jsoup:1.21.2'
+    implementation 'org.jsoup:jsoup:1.22.1'
     implementation "org.apache.commons:commons-text:1.14.0"
     implementation "commons-cli:commons-cli:1.11.0"
     testImplementation 'commons-io:commons-io:2.21.0'
